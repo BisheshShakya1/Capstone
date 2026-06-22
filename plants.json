@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
     {
         "id": 1,
@@ -20,4 +21,28 @@
         "water": "High",
         "difficulty": "Medium"
     }
+=======
+[
+    {
+        "id": 1,
+        "name": "Aloe Vera",
+        "light": "Low",
+        "water": "Medium",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 2,
+        "name": "Snake Plant",
+        "light": "Low",
+        "water": "Low",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 3,
+        "name": "Rose",
+        "light": "High",
+        "water": "High",
+        "difficulty": "Medium"
+    }
+>>>>>>> f15d0e6b4a403bf0ebe997827ed11d2e19bf8bb3
 ]
