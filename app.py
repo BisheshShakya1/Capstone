@@ -214,7 +214,7 @@ def delete_plant(plant_id):
     return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    app.run(debug=True)from flask import Flask, render_template_string, request, redirect, url_for
+    from flask import Flask, render_template_string, request, redirect, url_for
 import requests
 import math
 
