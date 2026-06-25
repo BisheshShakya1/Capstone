@@ -429,5 +429,5 @@ def delete_plant(plant_id):
         print("Error deleting plant:", e)
     return redirect(url_for("home"))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
