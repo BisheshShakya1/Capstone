@@ -1,8 +1,11 @@
 from flask import Flask, render_template_string, request, redirect, url_for, jsonify
+from flask_cors import CORS  # <--- NEW: Import CORS
 import requests
 import math
 
 app = Flask(__name__)
+CORS(app)  # <--- NEW: Enable CORS for all routes and origins
+
 API_URL = "https://plant-recommendation-system-hptd.onrender.com/api/plants"
 
 # ==================================================
