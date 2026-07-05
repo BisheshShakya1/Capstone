@@ -71,7 +71,7 @@ def create_app():
             "light": light,
             "humidity": humidity,
             "care": care,
-            "experience": "beginner",  # Default since API doesn't track experience
+            "experience": "beginner", 
             "pet_friendly": pet_friendly
         }
 
@@ -84,7 +84,7 @@ def create_app():
         page = request.args.get("page", 1, type=int)
         per_page = 6
 
-        plants = CRUD.get_all_plants() # <--- CALLING CRUD
+        plants = CRUD.get_all_plants() 
         filtered_plants = [p for p in plants if search in p.get("plant_name", "").lower() or search in p.get("category_name", "").lower()]
         
         total_pages = max(1, math.ceil(len(filtered_plants) / per_page))
@@ -94,7 +94,7 @@ def create_app():
 
     @app.route("/plant/<int:plant_id>")
     def plant_details(plant_id):
-        plant = CRUD.get_plant_by_id(plant_id) # <--- CALLING CRUD
+        plant = CRUD.get_plant_by_id(plant_id) 
         if not plant: return "Plant not found", 404
         return render_template_string(DETAILS_HTML, plant=plant)
 
@@ -103,7 +103,7 @@ def create_app():
         if request.method == "POST":
             new_plant = {k: request.form.get(k) for k in ["plant_name", "category_name", "growth_rate", "humidity_requirement", "light_requirement", "maintenance_level", "size_category", "temperature_range", "toxicity_level", "watering_frequency"]}
             new_plant["category_id"] = int(request.form.get("category_id")) if request.form.get("category_id") else None
-            CRUD.create_plant(new_plant) # <--- CALLING CRUD
+            CRUD.create_plant(new_plant) 
             return redirect(url_for("home"))
         return render_template_string(FORM_HTML, plant=None)
 
@@ -112,16 +112,16 @@ def create_app():
         if request.method == "POST":
             updated_plant = {k: request.form.get(k) for k in ["plant_name", "category_name", "growth_rate", "humidity_requirement", "light_requirement", "maintenance_level", "size_category", "temperature_range", "toxicity_level", "watering_frequency"]}
             updated_plant["category_id"] = int(request.form.get("category_id")) if request.form.get("category_id") else None
-            CRUD.update_plant(plant_id, updated_plant) # <--- CALLING CRUD
+            CRUD.update_plant(plant_id, updated_plant) 
             return redirect(url_for("plant_details", plant_id=plant_id))
         
-        plant = CRUD.get_plant_by_id(plant_id) # <--- CALLING CRUD
+        plant = CRUD.get_plant_by_id(plant_id) 
         if not plant: return "Plant not found", 404
         return render_template_string(FORM_HTML, plant=plant)
 
     @app.route("/delete/<int:plant_id>", methods=["POST"])
     def delete_plant(plant_id):
-        CRUD.delete_plant(plant_id) # <--- CALLING CRUD
+        CRUD.delete_plant(plant_id) 
         return redirect(url_for("home"))
 
     # ==================================================
@@ -133,21 +133,13 @@ def create_app():
 
     @app.route("/api/recommend", methods=["POST"])
     def api_recommend_plants():
-        """
-        Calls alg.py to get recommendations.
-        Expects JSON: {"preferences": {...}, "top_n": 5}
-        """
         data = request.get_json()
         if not data or "preferences" not in data:
             return jsonify({"error": "Missing 'preferences' in JSON body"}), 400
 
-        # 1. Get raw data from CRUD
         raw_plants = CRUD.get_all_plants() 
-        
-        # 2. Map data so alg.py doesn't crash on missing keys
         mapped_plants = [map_plant_for_alg(p) for p in raw_plants]
         
-        # 3. Call alg.py
         try:
             recommendations = alg.recommend_plants(
                 plants=mapped_plants,
@@ -158,11 +150,17 @@ def create_app():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+    # Return the configured app instance
     return app
+
 
 # ==================================================
 # RUN APP
 # ==================================================
+
+# 1. Create the app instance globally so Gunicorn can find it!
+app = create_app()
+
+# 2. This block only runs when you execute `python app.py` locally
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
