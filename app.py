@@ -55,8 +55,8 @@ def process_data():
 if __name__ == '__main__':
     # 2. Create a public tunnel to your local Flask server (port 5000)
     public_url = ngrok.connect(5000)
-    print(f"✅ Your local API is now publicly accessible at: {public_url}")
-    print("⚠️  Note: Your API is only online while this script is running!")
+    print(f"Your local API is now publicly accessible at: {public_url}")
+    print("Note: Your API is only online while this script is running!")
     
     # 3. Run the Flask app locally
     app.run(debug=True, port=5000)
