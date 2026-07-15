@@ -70,5 +70,5 @@ def get_item(item_id):
 
 if __name__ == '__main__':
     public_url = ngrok.connect(5000)
-    print(f"✅ API is live at: {public_url}")
+    print(f"API is live at: {public_url}")
     app.run(debug=True, port=5000)
